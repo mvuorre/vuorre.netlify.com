@@ -1,0 +1,11 @@
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+*_cache/
+content/**/*_files/
+drafts/
+public/
+.httr-oauth
+.DS_Store
+static/**/*.rds
