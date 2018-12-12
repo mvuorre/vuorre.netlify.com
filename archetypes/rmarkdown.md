@@ -34,5 +34,5 @@ bibliography: "`r here::here('static/bibliography/blog.bib')`"
 library(knitr)
 library(tidyverse)
 opts_chunk$set(warning = F, message = F, eval = T, cache = T)
-theme_set(theme_linedraw())
+theme_set(theme_linedraw() + theme(panel.grid = element_blank()))
 ```
