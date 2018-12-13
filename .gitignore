@@ -8,5 +8,3 @@
 public/
 *_cache/
 static/**/*.rds
-
-content/post/*.html
