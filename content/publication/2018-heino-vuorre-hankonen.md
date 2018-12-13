@@ -7,7 +7,7 @@ publication = "Health Psychology and Behavioral Medicine"
 publication_short = ""
 title = "Bayesian evaluation of behavior change interventions: a brief introduction and a practical example"
 url_pdf = "pdf/2018-heino-vuorre-hankonen.pdf"
-publication_types = ["1"]
+publication_types = ["2"]
 [[url_custom]]
 name = "Journal"
 url = "https://doi.org/10.1080/21642850.2018.1428102"

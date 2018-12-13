@@ -7,7 +7,7 @@ publication = "*Psychonomic Bulletin and Review*"
 publication_short = "*Psychonomic Bulletin and Review*"
 title = "On the (non)persuasive power of a brain image"
 url_pdf = "pdf/2013-Michael-et-al.pdf"
-publication_types = ["1"]
+publication_types = ["2"]
 [[url_custom]]
 name = "Journal"
 url = "http://link.springer.com/article/10.3758/s13423-013-0391-6"

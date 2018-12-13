@@ -7,7 +7,7 @@ publication = "*Consciousness and Cognition*"
 publication_short = "*Consciousness and Cognition*"
 title = "The relation between the sense of agency and the experience of flow"
 url_pdf = "pdf/2016-Vuorre-Metcalfe.pdf"
-publication_types = ["1"]
+publication_types = ["2"]
 [[url_custom]]
 name = "Journal"
 url = "http://www.sciencedirect.com/science/article/pii/S105381001630126X"

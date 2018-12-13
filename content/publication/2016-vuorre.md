@@ -7,7 +7,7 @@ publication = "CRAN"
 publication_short = "CRAN"
 title = "bmlm: Bayesian Multilevel Mediation"
 url_pdf = "https://cran.r-project.org/web/packages/bmlm/bmlm.pdf"
-publication_types = ["5"]
+publication_types = ["0"]
 [[url_custom]]
 name = "Website"
 url = "https://mvuorre.github.io/bmlm/"

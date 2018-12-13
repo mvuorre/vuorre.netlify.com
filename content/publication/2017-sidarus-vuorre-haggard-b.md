@@ -7,7 +7,7 @@ publication = "*Neuroscience of Consciousness*"
 publication_short = "*Neurosci Conscious*"
 title = "Integrating prospective and retrospective cues to the sense of agency: a multi-study investigation"
 url_pdf = "pdf/2017-Sidarus-Vuorre-Haggard-b.pdf"
-publication_types = ["1"]
+publication_types = ["2"]
 [[url_custom]]
 name = "Journal"
 url = "https://doi.org/10.1093/nc/nix012"

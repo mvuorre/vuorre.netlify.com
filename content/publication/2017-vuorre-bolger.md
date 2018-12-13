@@ -7,7 +7,7 @@ publication = "*Behavior Research Methods*"
 publication_short = "*Behav Res*"
 title = "Within-subject mediation analysis for experimental data in cognitive psychology and neuroscience"
 url_pdf = "pdf/2017-vuorre-bolger.pdf"
-publication_types = ["1"]
+publication_types = ["2"]
 [[url_custom]]
 name = "Journal"
 url = "https://link.springer.com/article/10.3758/s13428-017-0980-9"

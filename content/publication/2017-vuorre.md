@@ -7,7 +7,7 @@ publication = "Journal of Consciousness Studies"
 publication_short = ""
 title = "On Time, Causation and the Sense of Agency"
 url_pdf = "pdf/2017-Vuorre-jocs.pdf"
-publication_types = ["1"]
+publication_types = ["2"]
 [[url_custom]]
 name = "Journal"
 url = "http://www.ingentaconnect.com/contentone/imp/jcs/2017/00000024/F0020003/art00011"

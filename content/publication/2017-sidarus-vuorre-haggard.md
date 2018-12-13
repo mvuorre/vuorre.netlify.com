@@ -7,7 +7,7 @@ publication = "*NeuroImage*"
 publication_short = "*NeuroImage*"
 title = "How action selection influences the sense of agency: An ERP study"
 url_pdf = "pdf/2017-Sidarus-Vuorre-Haggard.pdf"
-publication_types = ["1"]
+publication_types = ["2"]
 [[url_custom]]
 name = "Journal"
 url = "http://www.sciencedirect.com/science/article/pii/S1053811917301180"

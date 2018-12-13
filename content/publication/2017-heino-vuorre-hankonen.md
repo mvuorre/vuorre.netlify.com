@@ -7,7 +7,7 @@ publication = ""
 publication_short = ""
 title = "Bayesian evaluation of behavior change interventions: A brief introduction and a practical example"
 url_pdf = "pdf/2017-Heino-Vuorre-Hankonen.pdf"
-publication_types = ["3"]
+publication_types = ["2"]
 [[url_custom]]
 name = "Preprint"
 url = "https://osf.io/preprints/psyarxiv/xmgwv/"

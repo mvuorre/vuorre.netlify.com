@@ -7,7 +7,7 @@ publication = "*Attention, Perception, & Psychophysics*"
 publication_short = "*Atten Percept Psychophys*"
 title = "Voluntary action alters the perception of visual illusions"
 url_pdf = "pdf/2017-Vuorre-Metcalfe.pdf"
-publication_types = ["1"]
+publication_types = ["2"]
 [[url_custom]]
 name = "Journal"
 url = "https://link.springer.com/article/10.3758/s13414-017-1321-x"

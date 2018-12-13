@@ -7,7 +7,7 @@ publication = "Advances in Methods and Practices in Psychological Science"
 publication_short = ""
 title = "Curating Research Assets: A Tutorial on the Git Version Control System"
 url_pdf = "pdf/2017-Vuorre-Curley.pdf"
-publication_types = ["1"]
+publication_types = ["2"]
 [[url_custom]]
 name = "Journal"
 url = "http://journals.sagepub.com/eprint/CxmDEDrWCmqw6sZTGNEh/full"

@@ -7,7 +7,7 @@ publication = "*Cortex*"
 publication_short = "*Cortex*"
 title = "Cross domain self-monitoring in anosognosia for memory loss in Alzheimer's disease"
 url_pdf = "pdf/2018-Chapman-etal.pdf"
-publication_types = ["1"]
+publication_types = ["2"]
 selected = false
 [[url_custom]]
 name = "Journal"

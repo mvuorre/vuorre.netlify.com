@@ -7,7 +7,7 @@ publication = "*Frontiers in Psychology*"
 publication_short = "*Frontiers in Psychology*"
 title = "Investigating the Prospective Sense of Agency: Effects of Processing Fluency, Stimulus Ambiguity, and Response Conflict"
 url_pdf = "pdf/2017-Sidarus-Vuorre-Metcalfe-Haggard.pdf"
-publication_types = ["1"]
+publication_types = ["2"]
 [[url_custom]]
 name = "Journal"
 url = "http://journal.frontiersin.org/article/10.3389/fpsyg.2017.00545/full"
