@@ -2,10 +2,11 @@
 .Rhistory
 .RData
 .Ruserdata
-*_cache/
-content/**/*_files/
-drafts/
-public/
 .httr-oauth
 .DS_Store
+
+public/
+*_cache/
 static/**/*.rds
+
+content/post/*.html
