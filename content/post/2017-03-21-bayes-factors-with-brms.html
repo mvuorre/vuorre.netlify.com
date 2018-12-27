@@ -32,7 +32,7 @@ summary: "How to calculate Bayes Factors with the R package brms (Buerkner, 2016
 </div>
 
 <p>Here’s a short post on how to calculate Bayes Factors with the R package <strong>brms</strong> (Buerkner, 2016) using the Savage-Dickey density ratio method (Wagenmakers, Lodewyckx, Kuriyal, &amp; Grasman, 2010).</p>
-<p>To get up to speed with what the Savage-Dickey density ratio method is–or what Bayes Factors are–please read Wagenmakers et al. 2010. (The paper is available on the <a href="http://www.ejwagenmakers.com/2010/WagenmakersEtAlCogPsy2010.pdf">author’s webpage</a>.) Here, I’ll only show the R &amp; brms code to do the calculations that Wagenmakers et al. (2010) discuss. In their paper, they used WinBUGS, which requires quite a bit of code to sample from even a relatively simple model. brms on the other hand uses the familiar R formula syntax, making it easy to use. brms also does the MCMC sampling with Stan (Stan Development Team, 2016a &amp; 2016b), or rather creates Stan code from a specified R model formula by what can only be described as string processing magic, making the sampling very fast. Let’s get straight to the examples in Wagenmakers et al. (2010)</p>
+<p>To get up to speed with what the Savage-Dickey density ratio method is–or what Bayes Factors are–please read Wagenmakers et al. 2010. (The paper is available on the <a href="http://www.ejwagenmakers.com/2010/WagenmakersEtAlCogPsy2010.pdf">author’s webpage</a>.) Here, I’ll only show the R &amp; brms code to do the calculations that Wagenmakers et al. (2010) discuss. In their paper, they used WinBUGS, which requires quite a bit of code to sample from even a relatively simple model. brms on the other hand uses the familiar R formula syntax, making it easy to use. brms also does the MCMC sampling with Stan (Stan Development Team, 2016a &amp; 2016b), or rather creates Stan code from a specified R model formula by what can only be described as string processing magic, making the sampling very fast. Let’s get straight to the examples in Wagenmakers et al. (2010)</p>
 <pre class="r"><code># We&#39;ll work in tidyverse
 library(tidyverse)</code></pre>
 <div id="example-0" class="section level1">
@@ -42,7 +42,7 @@ library(tidyverse)</code></pre>
 d</code></pre>
 <pre><code>##   s  k
 ## 1 9 10</code></pre>
-<p>We are interested in the person’s latent ability to answer similar questions correctly. This ability is represented by <span class="math inline">\(\theta\)</span> (theta), which for us will be the probability parameter (sometimes also called the rate parameter) in a binomial distribution. See Wagenmakers et al. (2010) for formulas. The maximum likelihood (point) estimate for <span class="math inline">\(\theta\)</span> is n/k, the proportion .9.</p>
+<p>We are interested in the person’s latent ability to answer similar questions correctly. This ability is represented by <span class="math inline">\(\theta\)</span> (theta), which for us will be the probability parameter (sometimes also called the rate parameter) in a binomial distribution. See Wagenmakers et al. (2010) for formulas. The maximum likelihood (point) estimate for <span class="math inline">\(\theta\)</span> is n/k, the proportion .9.</p>
 <p>The first thing we’ll need to specify with respect to our statistical model is the prior probability distribution for <span class="math inline">\(\theta\)</span>. As in Wagenmakers et al. 2010, we specify a uniform prior, representing no prior information about the person’s ability to aswer the questions. For the binomial probability parameter, <span class="math inline">\(Beta(\alpha = 1, \beta = 1)\)</span> is a uniform prior.</p>
 <pre class="r"><code>pd &lt;- tibble(
     x = seq(0, 1, by = .01),
@@ -150,7 +150,7 @@ print(h, digits = 4)</code></pre>
 p + scale_x_continuous(breaks = seq(-.5, .5, by = .25),
                        labels = seq(-.5, .5, by = .25)+.5)</code></pre>
 <p><img src="/post/2017-03-21-bayes-factors-with-brms_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
-<p>OK, so that was a lot of work for such a simple problem, but the real beauty of brms (and Stan) is the unparalleled scalability: We can easily solve a problem with one row of data and one parameter, and it won’t take much more to solve a problem with tens of thousands of rows of data, and hundreds of parameters. Let’s move on to the next example from Wagenmakers et al. (2010).</p>
+<p>OK, so that was a lot of work for such a simple problem, but the real beauty of brms (and Stan) is the unparalleled scalability: We can easily solve a problem with one row of data and one parameter, and it won’t take much more to solve a problem with tens of thousands of rows of data, and hundreds of parameters. Let’s move on to the next example from Wagenmakers et al. (2010).</p>
 </div>
 <div id="example-1-equality-of-proportions" class="section level1">
 <h1><span class="header-section-number">2</span> Example 1: Equality of Proportions</h1>
@@ -207,13 +207,13 @@ print(h1, digits = 3)</code></pre>
 ##                 Hypothesis Estimate Est.Error CI.Lower CI.Upper Evid.Ratio
 ## 1 (pledgeyes)-(pled... = 0   -0.051     0.019   -0.088   -0.015      0.505
 ##   Post.Prob Star
-## 1     0.335    *
+## 1     0.336    *
 ## ---
 ## &#39;*&#39;: The expected value under the hypothesis lies outside the 95%-CI.
 ## Posterior probabilities of point hypotheses assume equal prior probabilities.</code></pre>
 <p>As noted in the paper, a difference value of 0 is about twice as well supported before seeing the data, i.e. the null hypothesis of no difference is twice less likely after seeing the data:</p>
 <pre class="r"><code>1/h1$hypothesis$Evid.Ratio  # BF10</code></pre>
-<pre><code>## [1] 1.98133</code></pre>
+<pre><code>## [1] 1.979173</code></pre>
 <p>The paper reports BF01 = 0.47, so we’re getting the same results (as we should.) You can also compare this figure to what’s reported in the paper.</p>
 <pre class="r"><code>h1p1 &lt;- plot(h1, theme = theme_get(), plot = F)[[1]] +
     theme(legend.position = &quot;top&quot;)

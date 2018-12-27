@@ -46,7 +46,7 @@ summary: "2017 will be the year when social scientists finally decided to divers
 <p>“When data are interpreted in terms of meaningful parameters in a mathematical description, such as the difference of mean parameters in two groups, it is Bayesian analysis that provides complete information about the credible parameter values. Bayesian analysis is also more intuitive than traditional methods of null hypothesis significance testing (e.g., Dienes, 2011).”</p>
 </blockquote>
 <p>In that article (<em>Bayesian estimation supersedes the t-test</em>) Kruschke (2013) provided clear and well-reasoned arguments favoring Bayesian parameter estimation over null hypothesis significance testing in the context of comparing two groups, a situation which is usually dealt with a t-test. It also introduced a robust model for comparing two groups, which modeled the data as t-distributed, instead of a Gaussian distribution. The article provided R code for running the estimation procedures, which could be downloaded from the <a href="http://www.indiana.edu/~kruschke/BEST/">author’s website</a> or <a href="https://cran.r-project.org/package=BEST">as an R package</a> (Kruschke &amp; Meredith, 2015).</p>
-<p>The R code and programs work well for this specific application (estimating the robust model for one or two groups’ metric data). However, modifying the code to handle more complicated situations is not easy, and the underlying estimation algorithms don’t necessarily scale up to handle more complicated situations. Therefore, today I’ll introduce easy to use, free, open-source, state-of-the-art computer programs for Bayesian estimation, in the context of comparing two groups’ metric (continuous) data. The programs are available for the R programming language–so make sure you are familiar with R basics (e.g. <a href="http://blog.efpsa.org/2016/12/05/introduction-to-data-analysis-using-r/">Vuorre, 2016</a>). I provide R code (it’s super easy, don’t worry!) for t-tests and Bayesian estimation in R using the R package <strong>brms</strong> (Buerkner, 2016), which uses the powerful <a href="http://mc-stan.org/">Stan</a> <a href="https://en.wikipedia.org/wiki/Markov_chain_Monte_Carlo">MCMC</a> program (Stan Development Team, 2016) under the hood.</p>
+<p>The R code and programs work well for this specific application (estimating the robust model for one or two groups’ metric data). However, modifying the code to handle more complicated situations is not easy, and the underlying estimation algorithms don’t necessarily scale up to handle more complicated situations. Therefore, today I’ll introduce easy to use, free, open-source, state-of-the-art computer programs for Bayesian estimation, in the context of comparing two groups’ metric (continuous) data. The programs are available for the R programming language–so make sure you are familiar with R basics (e.g. <a href="http://blog.efpsa.org/2016/12/05/introduction-to-data-analysis-using-r/">Vuorre, 2016</a>). I provide R code (it’s super easy, don’t worry!) for t-tests and Bayesian estimation in R using the R package <strong>brms</strong> (Buerkner, 2016), which uses the powerful <a href="http://mc-stan.org/">Stan</a> <a href="https://en.wikipedia.org/wiki/Markov_chain_Monte_Carlo">MCMC</a> program (Stan Development Team, 2016) under the hood.</p>
 <p>These programs supersede older Bayesian inference programs because they are easy to use (brms is an interface to Stan, which is actually a programming language in itself), fast, and are able to handle models with thousands of parameters. Learning to implement basic analyses such as t-tests, and Kruschke’s robust model, with these programs is very useful because (obviously) you’ll then be able to do Bayesian statistics in practice, and will be prepared to understand and implement more complex models.</p>
 <p>Understanding the results of Bayesian estimation requires understanding some basics of Bayesian statistics, which I won’t describe here at all. If you are not familiar with Bayesian statistics, please read Kruschke’s excellent article (his book is also very good, Kruschke, 2014; see also McElreath, 2016). In fact, you should read the paper anyway, it’s very good.</p>
 <p>First, I’ll introduce the basics of t-tests in some detail, and then focus on understanding them as specific instantiations of <em>linear models</em>. If that sounds familiar, skip ahead to <strong>Bayesian Estimation of the t-test</strong>, where I introduce the <strong>brms</strong> package for estimating models using Bayesian methods. Following that, we’ll use “distributional regression” to obtain Bayesian estimates of the unequal variances t-test model. Finally, we’ll learn how to estimate Kruschke’s (2013) BEST model using brms.</p>
@@ -54,7 +54,7 @@ summary: "2017 will be the year when social scientists finally decided to divers
 <h1>The t in a t-test</h1>
 <p>We’ll begin with t-tests, using example data from Kruschke’s paper (p. 577):</p>
 <blockquote>
-<p>“Consider data from two groups of people who take an IQ test. Group 1 (N1=47) consumes a “smart drug,” and Group 2 (N2=42) is a control group that consumes a placebo.&quot;</p>
+<p>“Consider data from two groups of people who take an IQ test. Group 1 (N1=47) consumes a “smart drug,” and Group 2 (N2=42) is a control group that consumes a placebo."</p>
 </blockquote>
 <p>I’ve decided to call the control group “Group 0”, and the treatment group “Group 1”, because this coding makes it natural to think of the control group as a “reference group”, and any “effect” we’ll estimate will be associated with the treatment group. These data are visualized as histograms, below:</p>
 <div class="figure"><span id="fig:dataplot1"></span>
@@ -166,7 +166,7 @@ Figure 2: t distribution with 87 degrees of freedom, and observed t-value. The d
 <div id="equal-variances-model" class="section level2">
 <h2>Equal variances model</h2>
 <p>Next, I’ll illustrate how to estimate the equal variances t-test using Bayesian methods. We use <strong>brms</strong> (Buerkner, 2016), and the familiar R formula syntax which we used with the OLS model.</p>
-<p>Estimating this model with R, thanks to the Stan and brms teams (Stan Development Team, 2016; Buerkner, 2016), is as easy as the linear regression model we ran above. If you haven’t yet installed brms, you need to install it first by running <code>install.packages(&quot;brms&quot;)</code>. Then, to access its functions, load the <strong>brms</strong> package to the current R session.</p>
+<p>Estimating this model with R, thanks to the Stan and brms teams (Stan Development Team, 2016; Buerkner, 2016), is as easy as the linear regression model we ran above. If you haven’t yet installed brms, you need to install it first by running <code>install.packages("brms")</code>. Then, to access its functions, load the <strong>brms</strong> package to the current R session.</p>
 <pre class="r"><code>library(brms)</code></pre>
 <p>The most important function in the brms package is <code>brm()</code>, for Bayesian Regression Model(ing). The user needs only to input a model formula, just as above, and a data frame that contains the variables specified in the formula. <code>brm()</code> then translates the model into Stan language, and asks Stan to compile the model into C++ and estimate it (see Kruschke, 2014; McElreath, 2016 for details about estimation). The result is an R object with the estimated results (and much more). We run the model and save the results to <code>mod_eqvar</code> for equal variances model:</p>
 <pre class="r"><code>mod_eqvar &lt;- brm(
@@ -433,12 +433,12 @@ BEST &lt;- BESTmcmc(group_0, group_1)
 BEST
 ## MCMC fit results for BEST analysis:
 ## 100002 simulations saved.
-##           mean     sd  median   HDIlo   HDIup Rhat n.eff
-## mu1    100.525 0.2131 100.524 100.112 100.946    1 60693
-## mu2    101.548 0.3779 101.549 100.812 102.305    1 60962
-## nu       1.841 0.4807   1.764   1.024   2.745    1 22684
-## sigma1   1.052 0.2069   1.032   0.665   1.460    1 34049
-## sigma2   2.061 0.4336   2.022   1.269   2.926    1 29383
+##           mean     sd  median    HDIlo   HDIup  Rhat n.eff
+## mu1    100.526 0.2143 100.525 100.1061 100.951 1.000 58842
+## mu2    101.548 0.3785 101.550 100.8077 102.302 1.000 60761
+## nu       1.836 0.4754   1.760   1.0111   2.725 1.001 24508
+## sigma1   1.051 0.2075   1.031   0.6702   1.462 1.000 36411
+## sigma2   2.059 0.4342   2.021   1.2565   2.917 1.000 29389
 ## 
 ## &#39;HDIlo&#39; and &#39;HDIup&#39; are the limits of a 95% HDI credible interval.
 ## &#39;Rhat&#39; is the potential scale reduction factor (at convergence, Rhat=1).

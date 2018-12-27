@@ -150,7 +150,7 @@ mcmc_areas(samples_h, point_est = &quot;mean&quot;, prob = .8)</code></pre>
 Figure 2: Density plots of the standard deviation and correlation parameters of the UVSDT model’s parameters. Parameter’s appended with ’sd_id__’ are between-id standard deviations, ones with ’cor_id__’ are between-id correlations.
 </p>
 </div>
-<p>Figure <a href="#fig:population-density2">2</a> also tells us that the subject-specific <em>d’</em>s and <em>a</em>s are correlated (&quot;cor_id__isold__disc_isold&quot;). We can further investigate this relationship by plotting the subject specific signal-SDs and <em>d’</em>s side by side:</p>
+<p>Figure <a href="#fig:population-density2">2</a> also tells us that the subject-specific <em>d’</em>s and <em>a</em>s are correlated ("cor_id__isold__disc_isold"). We can further investigate this relationship by plotting the subject specific signal-SDs and <em>d’</em>s side by side:</p>
 <div class="figure"><span id="fig:side-by-side"></span>
 <img src="/post/2017-10-30-bayesian-estimation-of-signal-detection-theory-models-part-4_files/figure-html/side-by-side-1.png" alt="Ridgeline plot of posterior distributions of subject-specific standard deviations (left) and d-primes (right). The ordering of subjects on the y-axis is the same, so as to highlight the relationship between the two variables." width="672" />
 <p class="caption">
@@ -169,7 +169,7 @@ Figure 4: Scatterplot of posterior means of subject-specific d-primes and signal
 </div>
 <div id="conclusion" class="section level1">
 <h1>Conclusion</h1>
-<p>Estimating EVSDT and UVSDT models in the Bayesian framework with the brms package <span class="citation">(Bürkner 2017)</span> is both easy (relatively speaking) and informative. In this post, we estimated a hierarchical nonlinear cognitive model using no more than a few lines of code. Previous literature on the topic (e.g. <span class="citation">Rouder et al. (2007)</span>) has focused on simpler (EVSDT) models with more complicated implementations–hopefully in this post I have shown that these models are within the reach of a greater audience, provided that they have some familiarity with R.</p>
+<p>Estimating EVSDT and UVSDT models in the Bayesian framework with the brms package <span class="citation">(Bürkner 2017)</span> is both easy (relatively speaking) and informative. In this post, we estimated a hierarchical nonlinear cognitive model using no more than a few lines of code. Previous literature on the topic (e.g. <span class="citation">Rouder et al. (2007)</span>) has focused on simpler (EVSDT) models with more complicated implementations–hopefully in this post I have shown that these models are within the reach of a greater audience, provided that they have some familiarity with R.</p>
 <p>Another point worth making is a more general one about hierarchical models: We know that participants introduce (random) variation in our models. Ignoring this variation is clearly not good <span class="citation">(Estes 1956)</span>. It is more appropriate to model this variability, and use the resulting parameters to draw inference about the heterogeneity in parameters (and more generally, cognitive strategies) across individuals. Although maximum likelihood methods provide (noisy) point estimates of what I’ve here called between-subject heterogeneity parameters, the Bayesian method allows drawing firm conclusions about these parameters.</p>
 </div>
 <div id="references" class="section level1 unnumbered">

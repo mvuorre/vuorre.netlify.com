@@ -140,7 +140,7 @@ filter(ld, category == &quot;openness&quot;) %&gt;%
 </div>
 <div id="the-facetting-formula" class="section level2">
 <h2>The Facetting Formula</h2>
-<p>We repeatedly called <code>facet_wrap(&quot;variable&quot;)</code> to separate the plot to several facets, based on <code>variable</code>. However, we’re not restricted to one facetting variable, and can enter multiple variables simultaneously. To illustrate, I’ll plot all categories separately for each gender:</p>
+<p>We repeatedly called <code>facet_wrap("variable")</code> to separate the plot to several facets, based on <code>variable</code>. However, we’re not restricted to one facetting variable, and can enter multiple variables simultaneously. To illustrate, I’ll plot all categories separately for each gender:</p>
 <pre class="r"><code>ggplot(ld, aes(x = value)) +
     geom_histogram(fill = &quot;#31a354&quot;) +
     facet_wrap(gender~category)</code></pre>

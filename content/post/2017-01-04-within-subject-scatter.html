@@ -78,7 +78,7 @@ subject_means</code></pre>
 ##  9     5     0 2170.
 ## 10     5    50 2512.
 ## # ... with 98 more rows</code></pre>
-<p>The first plot is a simple bar graph showing the condition means, and every subject as a point. Note that the mean is visualized as a bar, using the <code>stat_summary(geom=&quot;bar&quot;)</code> function.</p>
+<p>The first plot is a simple bar graph showing the condition means, and every subject as a point. Note that the mean is visualized as a bar, using the <code>stat_summary(geom="bar")</code> function.</p>
 <pre class="r"><code>barplot &lt;- ggplot(subject_means, aes(x = angle, y = rt)) +
     stat_summary(
     geom = &quot;bar&quot;,

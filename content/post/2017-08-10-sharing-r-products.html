@@ -44,11 +44,11 @@ Don’t set R’s working directory from within an R script.
 <div id="absolute-file-paths" class="section level1">
 <h1>Absolute file paths</h1>
 <p>Setting the working directory from within a script relies on absolute file paths, which point to a specific location on a computer’s hard drive. This absolute location is sensitive to the folders on the user’s computer, because it specifies the entire path to the location (<code>C:/user1/...</code>). Therefore, if your user name isn’t “user1”, or you don’t have exactly the same folders as in the code snippet above, the script won’t run on your computer. I’d like my scripts to run on everyone’s computers!</p>
-<p>Some also recommend that you simply write the appropriate folder inside the quotes in <code>setwd(&quot;&quot;)</code> once you’ve downloaded the file(s). Why would I do that extra work? What if I later decide to move the file to another folder? It’s much better to use relative file paths instead.</p>
+<p>Some also recommend that you simply write the appropriate folder inside the quotes in <code>setwd("")</code> once you’ve downloaded the file(s). Why would I do that extra work? What if I later decide to move the file to another folder? It’s much better to use relative file paths instead.</p>
 </div>
 <div id="relative-file-paths" class="section level1">
 <h1>Relative file paths</h1>
-<p>A better option is not to set the working directory at all. Instead, assume that users themselves maintain their computing environment. This is most easily achieved by recommending users to use R Projects, which automatically set the working directory. Then, refer to files in your scripts by using relative file paths. Relative file paths point to files in relation to the script that is doing the referring. For example, if your R script file and data file (e.g. <code>data.csv</code>) are in the same folder, in your script you would refer to the data with:</p>
+<p>A better option is not to set the working directory at all. Instead, assume that users themselves maintain their computing environment. This is most easily achieved by recommending users to use R Projects, which automatically set the working directory. Then, refer to files in your scripts by using relative file paths. Relative file paths point to files in relation to the script that is doing the referring. For example, if your R script file and data file (e.g. <code>data.csv</code>) are in the same folder, in your script you would refer to the data with:</p>
 <pre class="r"><code>d &lt;- read.csv(&quot;data.csv&quot;)</code></pre>
 <p>No path needed!</p>
 <p>However, if you must set the working directory, use something external to the script, such as R Studio’s GUI to set the working directory.</p>
