@@ -10,7 +10,7 @@ tags: ["R", "bayes", "tutorial", "brms"]
 
 
 <script type="text/javascript" async
-  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 </script>
 <div id="introduction" class="section level1">
 <h1>Introduction</h1>
@@ -187,8 +187,8 @@ library(tidyverse)</code></pre>
 <p>Here’s what these data look like (point estimates +- 2 SEM):</p>
 <pre class="r"><code>library(ggplot2)
 ggplot(dat, aes(x=yi, y=study)) +
-    geom_segment(aes(x = yi-sei*2, xend = yi+sei*2, y=study, yend=study)) +
-    geom_point()</code></pre>
+  geom_segment(aes(x = yi-sei*2, xend = yi+sei*2, y=study, yend=study)) +
+  geom_point()</code></pre>
 <p><img src="/post/2016-09-29-bayesian-meta-analysis_files/figure-html/plot-fake-data-1.png" width="864" style="display: block; margin: auto;" /></p>
 </div>
 <div id="the-model" class="section level1">
@@ -242,10 +242,13 @@ summary(ma_out)</code></pre>
 <h2>Estimation with brms</h2>
 <p>Here’s how to fit this model with brms:</p>
 <pre class="r"><code>library(brms)
-brm_out &lt;- brm(yi | se(sei) ~ 1 + (1|study), 
-               prior = set_prior(&quot;uniform(0, 1000)&quot;, class = &quot;sd&quot;),
-               data = dat, iter = 5000, warmup = 2000, cores = 4,
-               file = here::here(&quot;static/data/metaanalysismodel&quot;))</code></pre>
+brm_out &lt;- brm(
+  yi | se(sei) ~ 1 + (1 | study), 
+  prior = set_prior(&quot;uniform(0, 1000)&quot;, class = &quot;sd&quot;),
+  data = dat, 
+  cores = 4,
+  file = here::here(&quot;static/data/metaanalysismodel&quot;)
+)</code></pre>
 <pre><code>#  Family: gaussian 
 #   Links: mu = identity; sigma = identity 
 # Formula: yi | se(sei) ~ 1 + (1 | study) 
@@ -272,7 +275,7 @@ brm_out &lt;- brm(yi | se(sei) ~ 1 + (1|study),
 <h1>Comparing results</h1>
 <p>We can now compare the results of these two estimation methods. Of course, the Bayesian method has a tremendous advantage, because it results in an actual distribution of plausible values, whereas the frequentist method gives us just point estimates.</p>
 <p><img src="/post/2016-09-29-bayesian-meta-analysis_files/figure-html/unnamed-chunk-4-1.png" width="864" style="display: block; margin: auto;" />
-<em>Figure 1.</em> Histogram of 80k samples from the posterior distribution of <span class="math inline">\(\mu\)</span> (top left) and <span class="math inline">\(\tau\)</span> (top right). Bottom left displays the multivariate posterior distribution of <span class="math inline">\(\mu\)</span> (x-axis) and <span class="math inline">\(\tau\)</span> (y-axis), light colors indicating increased plausibility of values. For each plot, the dashed lines display the maximum likelihood point estimate, and 95% confidence limits (only the point estimate is displayed for the multivariate figure.)</p>
+<em>Figure 1.</em> Histogram of samples from the posterior distribution of <span class="math inline">\(\mu\)</span> (top left) and <span class="math inline">\(\tau\)</span> (top right). Bottom left displays the multivariate posterior distribution of <span class="math inline">\(\mu\)</span> (x-axis) and <span class="math inline">\(\tau\)</span> (y-axis), light colors indicating increased plausibility of values. For each plot, the dashed lines display the maximum likelihood point estimate, and 95% confidence limits (only the point estimate is displayed for the multivariate figure.)</p>
 <p>We can see from the numeric output, and especially the figures, that these modes of inference yield the same numerical results. Keep in mind though, that the Bayesian estimates actually allow you to discuss probabilities, and generally the things that we’d like to discuss when talking about results.</p>
 <p>For example, what is the probability that the average effect size is greater than 0.2?</p>
 <pre class="r"><code>avg_es &lt;- as.data.frame(brm_out, pars = &quot;b_&quot;)[,1]
@@ -286,8 +289,8 @@ forest(brm_out,
        show_data = TRUE,
        av_name = &quot;Effect size&quot;)</code></pre>
 <p><img src="/post/2016-09-29-bayesian-meta-analysis_files/figure-html/draw-forest-plot-1.png" width="864" style="display: block; margin: auto;" /></p>
-<p>This forest plot displays the entire posterior distribution of each <span class="math inline">\(\theta_i\)</span>. The meta-analytic effect size <span class="math inline">\(\mu\)</span> is also displayed in the bottom row. The mean and 95% CI limits of the posteriors are also displayed on the right in text form for all you precision fans. The plot also shows each study’s <em>observed</em> mean effect size as a little star.</p>
-<p>Focus on Moran et al. (1997)’s observed effect size (the star): This is a really anomalous result compared to all other studies. One might describe it as <em>incredible</em>, and that is indeed what the bayesian estimation procedure has done, and the resulting posterior distribution is no longer equivalent to the observed effect size. Instead, it is shrunken toward the average effect size. Now look at the table above, this study only had 56 participants, so we <em>should</em> be more skeptical of this study’s observed ES, and perhaps we <em>should</em> then adjust our beliefs about this study in the context of other studies. Therefore, our best guess about this study’s effect size, <em>given all the other studies</em> is no longer the observed mean, but something closer to the average across the studies. Fantastic. Brilliant, even.</p>
+<p>This forest plot displays the entire posterior distribution of each <span class="math inline">\(\theta_i\)</span>. The meta-analytic effect size <span class="math inline">\(\mu\)</span> is also displayed in the bottom row. The mean and 95% CI limits of the posteriors are also displayed on the right in text form for all you precision fans. The plot also shows each study’s <em>observed</em> mean effect size as an empty circle.</p>
+<p>Focus on Moran et al. (1997)’s observed effect size (the empty circle): This is an anomalous result compared to all other studies. One might describe it as <em>incredible</em>, and that is indeed what the bayesian estimation procedure has done, and the resulting posterior distribution is no longer equivalent to the observed effect size. Instead, it is shrunken toward the average effect size. Now look at the table above, this study only had 56 participants, so we <em>should</em> be more skeptical of this study’s observed ES, and perhaps we <em>should</em> then adjust our beliefs about this study in the context of other studies. Therefore, our best guess about this study’s effect size, <em>given all the other studies</em> is no longer the observed mean, but something closer to the average across the studies.</p>
 <p>If this shrinkage business seems radical, consider Quine et al. (2012). This study had a much greater sample size (537), and therefore a smaller SE. It was also generally more in line with the average effect size estimate. Therefore, the observed mean ES and the mean of the posterior distribution are pretty much identical. This is also a fairly desirable feature.</p>
 </div>
 </div>

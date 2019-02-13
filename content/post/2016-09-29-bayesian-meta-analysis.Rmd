@@ -27,7 +27,7 @@ opts_chunk$set(
 ```
 
 <script type="text/javascript" async
-  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 </script>
 
 # Introduction
@@ -76,8 +76,8 @@ Here's what these data look like (point estimates +- 2 SEM):
 ```{r plot-fake-data}
 library(ggplot2)
 ggplot(dat, aes(x=yi, y=study)) +
-    geom_segment(aes(x = yi-sei*2, xend = yi+sei*2, y=study, yend=study)) +
-    geom_point()
+  geom_segment(aes(x = yi-sei*2, xend = yi+sei*2, y=study, yend=study)) +
+  geom_point()
 ```
 
 # The model
@@ -128,10 +128,13 @@ Here's how to fit this model with brms:
 
 ```{r fit-ma-brms}
 library(brms)
-brm_out <- brm(yi | se(sei) ~ 1 + (1|study), 
-               prior = set_prior("uniform(0, 1000)", class = "sd"),
-               data = dat, iter = 5000, warmup = 2000, cores = 4,
-               file = here::here("static/data/metaanalysismodel"))
+brm_out <- brm(
+  yi | se(sei) ~ 1 + (1 | study), 
+  prior = set_prior("uniform(0, 1000)", class = "sd"),
+  data = dat, 
+  cores = 4,
+  file = here::here("static/data/metaanalysismodel")
+)
 ```
 
 ```{r results-disp, echo = F}
@@ -148,40 +151,45 @@ We can now compare the results of these two estimation methods. Of course, the B
 library(viridis)
 ma_tau <- confint(ma_out)$random[2,]
 ma_mu <- confint(ma_out, fixed = T)$fixed
-posterior <- as.data.frame(brm_out, pars = c("sd", "b_"))
+posterior <- as.data.frame(brm_out, pars = c("b_", "sd"))
 names(posterior) <- c("mu", "tau")
 gridExtra::grid.arrange(
-    ggplot(posterior, aes(x=mu)) +
-        geom_histogram(binwidth=.005) +
-        geom_vline(xintercept = as.numeric(ma_mu), lty = 2) +
-        scale_x_continuous(expression(mu), limits = c(0, 0.5)) +
-        scale_y_continuous(expand = c(0, 0)) + 
-        theme(panel.grid = element_blank(),
-              axis.title.y = element_blank()),
-    ggplot(posterior, aes(x=tau)) +
-        geom_histogram(binwidth=.005) +
-        geom_vline(xintercept = as.numeric(ma_tau), lty = 2) +
-        scale_x_continuous(expression(tau), limits = c(0, 0.5)) +
-        scale_y_continuous(expand = c(0, 0)) + 
-        theme(panel.grid = element_blank(),
-              axis.title.y = element_blank()),
-    ggplot(posterior, aes(x=mu, y=tau)) + 
-        stat_density_2d(geom = "raster", aes(fill = ..density..), contour = FALSE) +
-        geom_vline(xintercept = as.numeric(ma_mu)[1], col="red") +
-        geom_hline(yintercept = as.numeric(ma_tau)[1], col="red") +
-        scale_fill_viridis(na.value = "black") +
-        coord_cartesian(xlim = c(0,0.3), ylim = c(0, 0.3)) +
-        scale_x_continuous(expand = c(0, 0)) +
-        scale_y_continuous(expand = c(0, 0)) +
-        labs(x = expression(mu), y = expression(tau)),
-    ggplot(dat, aes(x=yi, y=study)) +
-        geom_segment(aes(x = yi-sei*2, xend = yi+sei*2, y=study, yend=study)) +
-        geom_point() +
-        theme(axis.title.y = element_blank()),
-    ncol = 2
+  ggplot(posterior, aes(x=mu)) +
+    geom_histogram(binwidth=.01) +
+    geom_vline(xintercept = as.numeric(ma_mu), lty = 2) +
+    scale_x_continuous(expression(mu), limits = c(0, 0.5)) +
+    scale_y_continuous(expand = c(0, 0)) + 
+    theme(panel.grid = element_blank(),
+          axis.title.y = element_blank()),
+  ggplot(posterior, aes(x=tau)) +
+    geom_histogram(binwidth=.01) +
+    geom_vline(xintercept = as.numeric(ma_tau), lty = 2) +
+    scale_x_continuous(expression(tau), limits = c(0, 0.5)) +
+    scale_y_continuous(expand = c(0, 0)) + 
+    theme(panel.grid = element_blank(),
+          axis.title.y = element_blank()),
+  ggplot(posterior, aes(x=mu, y=tau)) + 
+    stat_density_2d(
+      geom = "raster", 
+      aes(fill = ..density..), 
+      n = 201, 
+      contour = FALSE
+      ) +
+    geom_vline(xintercept = as.numeric(ma_mu)[1], col="red") +
+    geom_hline(yintercept = as.numeric(ma_tau)[1], col="red") +
+    scale_fill_viridis(na.value = "black") +
+    scale_x_continuous(expand = c(0, 0)) +
+    scale_y_continuous(expand = c(0, 0)) +
+    labs(x = expression(mu), y = expression(tau)) +
+    theme(legend.position = "none"),
+  ggplot(dat, aes(x=yi, y=study)) +
+    geom_segment(aes(x = yi-sei*2, xend = yi+sei*2, y=study, yend=study)) +
+    geom_point() +
+    theme(axis.title.y = element_blank()),
+  ncol = 2
 )
 ```
-*Figure 1.* Histogram of 80k samples from the posterior distribution of $\mu$ (top left) and $\tau$ (top right). Bottom left displays the multivariate posterior distribution of $\mu$ (x-axis) and $\tau$ (y-axis), light colors indicating increased plausibility of values. For each plot, the dashed lines display the maximum likelihood point estimate, and 95% confidence limits (only the point estimate is displayed for the multivariate figure.)
+*Figure 1.* Histogram of samples from the posterior distribution of $\mu$ (top left) and $\tau$ (top right). Bottom left displays the multivariate posterior distribution of $\mu$ (x-axis) and $\tau$ (y-axis), light colors indicating increased plausibility of values. For each plot, the dashed lines display the maximum likelihood point estimate, and 95% confidence limits (only the point estimate is displayed for the multivariate figure.)
 
 We can see from the numeric output, and especially the figures, that these modes of inference yield the same numerical results. Keep in mind though, that the Bayesian estimates actually allow you to discuss probabilities, and generally the things that we'd like to discuss when talking about results.
 
@@ -203,9 +211,9 @@ forest(brm_out,
        av_name = "Effect size")
 ```
 
-This forest plot displays the entire posterior distribution of each $\theta_i$. The meta-analytic effect size $\mu$ is also displayed in the bottom row. The mean and 95% CI limits of the posteriors are also displayed on the right in text form for all you precision fans. The plot also shows each study's *observed* mean effect size as a little star. 
+This forest plot displays the entire posterior distribution of each $\theta_i$. The meta-analytic effect size $\mu$ is also displayed in the bottom row. The mean and 95% CI limits of the posteriors are also displayed on the right in text form for all you precision fans. The plot also shows each study's *observed* mean effect size as an empty circle. 
 
-Focus on Moran et al. (1997)'s observed effect size (the star): This is a really anomalous result compared to all other studies. One might describe it as *incredible*, and that is indeed what the bayesian estimation procedure has done, and the resulting posterior distribution is no longer equivalent to the observed effect size. Instead, it is shrunken toward the average effect size. Now look at the table above, this study only had 56 participants, so we *should* be more skeptical of this study's observed ES, and perhaps we *should* then adjust our beliefs about this study in the context of other studies. Therefore, our best guess about this study's effect size, *given all the other studies* is no longer the observed mean, but something closer to the average across the studies. Fantastic. Brilliant, even.
+Focus on Moran et al. (1997)'s observed effect size (the empty circle): This is an anomalous result compared to all other studies. One might describe it as *incredible*, and that is indeed what the bayesian estimation procedure has done, and the resulting posterior distribution is no longer equivalent to the observed effect size. Instead, it is shrunken toward the average effect size. Now look at the table above, this study only had 56 participants, so we *should* be more skeptical of this study's observed ES, and perhaps we *should* then adjust our beliefs about this study in the context of other studies. Therefore, our best guess about this study's effect size, *given all the other studies* is no longer the observed mean, but something closer to the average across the studies.
 
 If this shrinkage business seems radical, consider Quine et al. (2012). This study had a much greater sample size (537), and therefore a smaller SE. It was also generally more in line with the average effect size estimate. Therefore, the observed mean ES and the mean of the posterior distribution are pretty much identical. This is also a fairly desirable feature.
 
