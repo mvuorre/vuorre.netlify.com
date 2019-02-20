@@ -27,7 +27,7 @@ output:
     toc_depth: 2
     df_print: paged
 summary: 
-bibliography: "`r here::here('static/bibliography/blog.bib')`"
+bibliography: "../../static/bibliography/blog.bib"
 ---
 ---
 ```{r setup, include = FALSE}
