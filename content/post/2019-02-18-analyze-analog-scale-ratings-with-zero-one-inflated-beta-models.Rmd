@@ -386,42 +386,38 @@ summary(fit)
 
 First, the summary of this model prints a paragraph of information about the model, such as the outcome family (ZOIB), link functions, etc. The regression coefficients are found under the "Population-Level Effects:" header. The columns of this section are "Estimate", the posterior mean or point estimate of the parameter. "Est.Error", the posterior standard deviation, or so called standard error of the parameter. Then, the lower and upper limit of the 95% Credible Interval. The two last columns are diagnostics of the model fitting procedure. 
 
-The first four rows of this describe the parameters for the baseline group (Group A). `Intercept` is the logit-transformed mean of the beta distribution for Group A's ratings (the subset of ratings that were (0, 1)). To convert it back to the data scale, we'll use the inverse link function, which for the logit is `plogis()`
+The first four rows of this describe the parameters for the baseline group (Group A). `Intercept` is the logit-transformed mean of the beta distribution for Group A's ratings (the subset of ratings that were (0, 1)). Next, `phi_Intercept` describes the precision of the beta distribution fitted to Group A's slider responses, on the scale of the (log) link function. `zoi_Intercept` is the zero or one inflation of Group A's data, on the logit scale. `coi_Intercept` is the conditional one inflation; out of the 0 or 1 ratings in Group A's data, describing the proportion of ones (out of the 0/1 responses)?
+
+These parameters are described on the link scale, so for each of them, we can use the inverse link function to transform them to the response scale. Precision (`phi_Intercept`) was modeled on the log scale. Therefore, we can convert it back to the original scale by exponentiating. For the other parameters, which were modeled on the logit scale, we can use the inverse, which is `plogis()`.
+
+However, before converting the parameters, it is important to note that the estimates displayed above are summaries (means, quantiles) of the posterior draws of the parameters on the link function scale. Therefore, we cannot simply convert the summaries. Instead, we must transform each of the posterior samples, and then re-calculate the summaries. The following code accomplishes this "transform-then-summarize" procedure for each of the four parameters:
 
 ```{r, echo = TRUE}
-plogis(0.33) %>% round(3)
+posterior_samples(fit, pars = "b_")[,1:4] %>% 
+  mutate_at(c("b_phi_Intercept"), exp) %>% 
+  mutate_at(vars(-"b_phi_Intercept"), plogis) %>% 
+  posterior_summary() %>% 
+  as.data.frame() %>% 
+  rownames_to_column("Parameter") %>% 
+  kable(digits = 2) 
 ```
 
-This number is the estimated mean of the beta distribution fitted to Group A's (0, 1) rating scale responses. Next, `phi_Intercept` describes the precision of the beta distribution fitted to Group A's slider responses, on the scale of the (log) link function. Therefore, we can convert it back to the original scale by exponentiating:
+We can then interpret these summaries, beginning with `b_Intercept`. This is the estimated mean of the beta distribution fitted to Group A's (0, 1) rating scale responses (with its standard error, lower- and upper limits of the 95% CI). Then, `b_Phi_Intercept` is the precision of the beta distribution. `zoi` is the zero-one inflation, and `coi` the conditional one inflation.
 
-```{r, echo = TRUE}
-exp(1.49) %>% round(3)
-```
-
-`zoi_Intercept` is the zero or one inflation of Group A's data, on the logit scale. To convert it to a probability, we can again use the inverse of the link function:
-
-```{r, echo = TRUE}
-plogis(-0.80) %>% round(3)
-```
-
-To make this concrete, we should be able to compare this number to the observed proportion of 0/1 values in the data:
+To make `b_zoi_Intercept` concrete, we should be able to compare its posterior mean to the observed proportion of 0/1 values in the data:
 
 ```{r, echo = TRUE}
 mean(dat$Rating[dat$group=="A"] %in% 0:1) %>% round(3)
 ```
 
-Above we calculated the proportion of zeros and ones in the data set, and found that it matches the estimated value of `zoi_Intercept`: `zoi_Intercept` is the estimated (logit) proportion of zeros or ones in group A's data.
-
-`coi_Intercept` is the conditional one inflation; out of the 0 or 1 ratings in Group A's data, what proportion are ones?
+Above we calculated the proportion of zeros and ones in the data set, and found that it matches the estimated value. Similarly, for `coi`, we can find the corresponding value from the data:
 
 ```{r, echo = TRUE}
-plogis(0.61) %>% round(3)
-# Compare to a simple count from data (sorry for ugly code)
 mean(dat$Rating[dat$group=="A" & dat$Rating %in% 0:1] == 1) %>% 
   round(3)
 ```
 
-The following four parameters are the effects of being in group B on these parameters. Most importantly, `groupB` is the effect of group B (versus group A) on the mean of the ratings' assumed beta distribution, in the logit scale. Immediately, we can see that the parameter's 95% Credible Interval does not include zero. Traditionally, this parameter would be called "significant"; group B's (0, 1) ratings are on average greater than group A's.
+Let's get back to the model summary output. The following four parameters are the effects of being in group B on these parameters. Most importantly, `groupB` is the effect of group B (versus group A) on the mean of the ratings' assumed beta distribution, in the logit scale. Immediately, we can see that the parameter's 95% Credible Interval does not include zero. Traditionally, this parameter would be called "significant"; group B's (0, 1) ratings are on average greater than group A's.
 
 To transform this effect back to the data scale, we can again use `plogis()`. However, it is important to keep in mind that the effect's size on the original scale depends on the intercept, getting smaller as the intercept increases (just like in any other generalized linear model.) The following bit of code transforms this effect and its uncertainty back to the original scale.
 
