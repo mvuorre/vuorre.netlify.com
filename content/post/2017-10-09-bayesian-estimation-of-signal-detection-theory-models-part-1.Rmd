@@ -25,6 +25,7 @@ bibliography: "`r here::here('static/bibliography/blog.bib')`"
 ---
 
 ```{r setup, include = FALSE}
+library(tidyverse)
 library(knitr)
 library(brms)
 opts_chunk$set(warning = F, message = F, cache = T)
