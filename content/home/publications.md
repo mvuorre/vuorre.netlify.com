@@ -6,7 +6,7 @@ active = true
 date = 2016-04-20T00:00:00
 
 title = "Publications"
-subtitle = "View my publications on [ORCID](https://orcid.org/0000-0001-5052-066X) or [Google Scholar](https://scholar.google.com/citations?user=I4DSy-8AAAAJ)"
+subtitle = "View my publications on [ORCID](https://orcid.org/0000-0001-5052-066X) or [Google Scholar](https://scholar.google.com/citations?hl=en&user=I4DSy-8AAAAJ&view_op=list_works&sortby=pubdate)"
 
 # Order that this section will appear in.
 weight = 2
