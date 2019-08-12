@@ -6,13 +6,13 @@ active = true
 date = 2016-04-20T00:00:00
 
 title = "Publications"
-subtitle = ""
+subtitle = "View my publications on [ORCID](https://orcid.org/0000-0001-5052-066X) or [Google Scholar](https://scholar.google.com/citations?user=I4DSy-8AAAAJ)"
 
 # Order that this section will appear in.
 weight = 2
 
 # Number of publications to list.
-count = 3
+count = 0
 
 # List format.
 #   0 = Simple
